@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="CircularButtonStyle" parent="Widget.AppCompat.Button">
+        <item name="android:background">@drawable/circle</item>
+        <!-- Add other attributes as desired -->
+    </style>
+
+</resources>
