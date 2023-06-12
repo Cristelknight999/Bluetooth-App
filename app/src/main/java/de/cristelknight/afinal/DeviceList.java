@@ -14,9 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,10 +22,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.chip.Chip;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
+
+import de.cristelknight.afinal.util.GeneralUtil;
 
 public class DeviceList extends AppCompatActivity {
 
@@ -41,7 +39,7 @@ public class DeviceList extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            Toast.makeText(getApplicationContext(), "Android version to new!", Toast.LENGTH_LONG).show();
+            msg("Android version to new!");
             finish();
         }
 
@@ -52,7 +50,7 @@ public class DeviceList extends AppCompatActivity {
 
         myBluetooth = BluetoothAdapter.getDefaultAdapter();
         if (myBluetooth == null) {
-            Toast.makeText(getApplicationContext(), "Bluetooth device not available", Toast.LENGTH_LONG).show();
+            msg("Bluetooth device not available");
             finish();
         } else if (!myBluetooth.isEnabled()) {
             Intent turnBTon = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
@@ -109,29 +107,12 @@ public class DeviceList extends AppCompatActivity {
                 mDeviceList.add(new Pair<>(bt.getName(), bt.getAddress()));
             }
         } else {
-            Toast.makeText(getApplicationContext(), "No Paired Bluetooth Devices Found.", Toast.LENGTH_LONG).show();
+            msg("No Paired Bluetooth Devices Found.");
         }
     }
-    /*
-    @SuppressLint("MissingPermission")
-    private void pairedDevicesList() {
-        pairedDevices = myBluetooth.getBondedDevices();
-        ArrayList<String> list = new ArrayList<>();
 
-        if (!pairedDevices.isEmpty()) {
-            for (BluetoothDevice bt : pairedDevices) {
-                list.add(bt.getName() + "\n" + bt.getAddress());
-            }
-        } else {
-            Toast.makeText(getApplicationContext(), "No Paired Bluetooth Devices Found.", Toast.LENGTH_LONG).show();
-        }
-
-        final ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, list);
-        devicelist.setAdapter(adapter);
-        devicelist.setOnItemClickListener(myListClickListener);
+    public void msg(String s) {
+        GeneralUtil.msg(s, this);
+        //Log.d(TAG, s);
     }
-
-     */
-
-
 }

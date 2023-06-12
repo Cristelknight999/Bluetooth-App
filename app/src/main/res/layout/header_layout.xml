@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/footer_view"
-        android:textColor="@color/white"
+        android:textColor="#D50000"
         android:textColorHighlight="#FF0000"
         android:textSize="20sp" />
 

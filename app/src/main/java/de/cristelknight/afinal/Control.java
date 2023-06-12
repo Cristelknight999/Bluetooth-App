@@ -1,17 +1,15 @@
 package de.cristelknight.afinal;
 
-import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
-
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.Button;
 import android.widget.SeekBar;
+import android.widget.Switch;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -25,7 +23,8 @@ public class Control extends AppCompatActivity {
 
     Button btnDis, btn1, btn2, btn3, btn4, btn6, btn7, btn8, btn9;
     SeekBar seekBar, seekBar2;
-
+    @SuppressLint("UseSwitchCompatOrMaterialCode")
+    Switch switch1;
     private int seekBarDelay = 0;
     private int seekBarDelay2 = 0;
 
@@ -46,7 +45,6 @@ public class Control extends AppCompatActivity {
 
         if(!isBtConnected && !isTryingToConnect){
             new ConnectBT(this).execute();
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
         }
 
         //Set-up View
@@ -64,22 +62,29 @@ public class Control extends AppCompatActivity {
         seekBar = findViewById(R.id.seekBar);
         seekBar2 = findViewById(R.id.seekBar2);
         seekBar2.setProgress(50);
+        switch1 = findViewById(R.id.switch1);
+
+        switch1.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                sendSignalClosed("w" + 1);
+            } else {
+                sendSignalClosed("w" + 0);
+            }
+        });
 
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                seekBarDelay = getProgressDelayed(progress, seekBarDelay);
+                seekBarDelay = getProgressSpeed(progress, seekBarDelay, true);
             }
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-                // This method is called when the user starts interacting with the SeekBar
-            }
+            public void onStartTrackingTouch(SeekBar seekBar) {}
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                seekBarDelay = getProgress(seekBar.getProgress());
+                seekBarDelay = getProgressSpeed(seekBar.getProgress(), seekBarDelay, false);
             }
         });
 
@@ -87,13 +92,12 @@ public class Control extends AppCompatActivity {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                seekBarDelay2 = getProgressDelayed2(progress, seekBarDelay2);
+                if(fromUser)
+                    seekBarDelay2 = getProgressRotation(progress, seekBarDelay2, true);
             }
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-                // This method is called when the user starts interacting with the SeekBar
-            }
+            public void onStartTrackingTouch(SeekBar seekBar) {}
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
@@ -101,7 +105,7 @@ public class Control extends AppCompatActivity {
                 if(Math.abs(Math.subtractExact(50, progress)) <= 20){
                     seekBar.setProgress(50);
                 }
-                seekBarDelay2 = getProgress2(seekBar.getProgress());
+                seekBarDelay2 = getProgressRotation(seekBar.getProgress(), seekBarDelay2, false);
             }
         });
 
@@ -118,30 +122,16 @@ public class Control extends AppCompatActivity {
         btnDis.setOnClickListener(v -> disconnect());
     }
 
-    public int getProgressDelayed(int progress, int delay){
-        if(Math.abs(Math.subtractExact(delay, progress)) >= 20){
-            delay = progress;
-            sendSignal("s" + GeneralUtil.getScaledValue(progress, 255, 50) + "z");
-        }
-        return delay;
+
+
+
+    public int getProgressSpeed(int progress, int currentDelay, boolean delayed){
+        return GeneralUtil.getProgress(progress, currentDelay, 20, 80, 255, delayed, "s", this);
     }
 
-    public int getProgress(int progress){
-        sendSignal("s" + GeneralUtil.getScaledValue(progress, 255, 50) + "z");
-        return progress;
-    }
 
-    public int getProgressDelayed2(int progress, int delay){
-        if(Math.abs(Math.subtractExact(delay, progress)) >= 5){
-            delay = progress;
-            sendSignal("r" + GeneralUtil.getScaledValue(progress, 100, -100) + "z");
-        }
-        return delay;
-    }
-
-    public int getProgress2(int progress){
-        sendSignal("r" + GeneralUtil.getScaledValue(progress, 100, -100) + "z");
-        return progress;
+    public int getProgressRotation(int progress, int currentDelay, boolean delayed){
+        return GeneralUtil.getProgress(progress, currentDelay, 15, -100, 100, delayed,"r", this);
     }
 
 
@@ -150,16 +140,17 @@ public class Control extends AppCompatActivity {
         setOnTouchListener(btn1, "m" + message, "m" + 5);
     }
 
+
     @SuppressLint("ClickableViewAccessibility")
     private void setOnTouchListener(Button button, String message, String release){
         button.setOnTouchListener((v, event) -> {
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
                 // Button pressed
-                sendSignal(message + "z");
+                sendSignalClosed(message);
                 return true;
             } else if (event.getAction() == MotionEvent.ACTION_UP) {
                 // Button released
-                sendSignal(release + "z");
+                sendSignalClosed(release);
                 return true;
             }
             return false;
@@ -167,16 +158,20 @@ public class Control extends AppCompatActivity {
     }
 
 
+    public void sendSignalClosed(String string) {
+        sendSignal(string + "z");
+    }
+
     private void sendSignal(String string) {
         if(btSocket != null) {
             try {
                 btSocket.getOutputStream().write(string.getBytes());
             } catch (IOException e) {
-                msg("Error");
+                msg("Couldn't write to Socket.");
             }
         }
         else {
-            msg("BtSocket = null");
+            msg("Socket is null.");
         }
     }
 
@@ -186,15 +181,15 @@ public class Control extends AppCompatActivity {
             try {
                 btSocket.close();
             } catch(IOException e) {
-                msg("Error");
+                msg("Couldn't close Socket.");
             }
         }
         finish();
     }
 
-    private void msg(String s) {
+    public void msg(String s) {
         GeneralUtil.msg(s, this);
-        Log.d(TAG, s);
+        //Log.d(TAG, s);
     }
 
 }

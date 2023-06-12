@@ -1,10 +1,8 @@
 package de.cristelknight.afinal.util.connecting;
 
-import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
-
 import android.app.ProgressDialog;
+import android.content.pm.ActivityInfo;
 import android.os.Handler;
-import android.util.Log;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -13,14 +11,14 @@ import java.util.concurrent.Future;
 import de.cristelknight.afinal.Control;
 
 public class ConnectBT {
-    private Control control;
-    private ExecutorService executor;
+    private final Control control;
+    private final ExecutorService executor;
     private Future<Void> connectTask;
-    private Handler handler;
+    private final Handler handler;
 
     private ProgressDialog dialog;
 
-    private Runnable timeoutRunnable;
+    private final Runnable timeoutRunnable;
 
     public ConnectBT(Control control) {
         this.control = control;
@@ -46,7 +44,7 @@ public class ConnectBT {
 
 
     public void cancel() {
-        msg("Couldn't connect 2");
+        ConnectBTCallable.log("Couldn't connect 2");
         if (connectTask != null) {
             connectTask.cancel(true);
         }
@@ -54,10 +52,8 @@ public class ConnectBT {
             dialog.cancel();
         }
         Control.isTryingToConnect = false;
+        control.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
         control.finish();
     }
 
-    private void msg(String s) {
-        Log.d(TAG, s);
-    }
 }

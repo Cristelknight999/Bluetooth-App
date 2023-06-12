@@ -4,9 +4,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#C81515"
-    android:backgroundTint="@color/white"
+    android:background="@color/red"
+    android:backgroundTint="@color/dc_gray"
     tools:context=".Control">
+
+    <Switch
+        android:id="@+id/switch1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="84dp"
+        android:text="@string/water"
+        android:textColor="@color/red"
+        android:textColorHint="@color/red"
+        app:layout_constraintBottom_toTopOf="@+id/button1"
+        app:layout_constraintEnd_toStartOf="@+id/seekBar2"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.814"
+        tools:ignore="UseSwitchCompatOrMaterialXml" />
 
     <TextView
         android:id="@+id/textView2"
@@ -36,7 +53,6 @@
 
     <Button
         android:id="@+id/button4"
-        style="@style/CircularButtonStyle"
         android:layout_width="65dp"
         android:layout_height="65dp"
         android:background="@drawable/myrect"
@@ -59,7 +75,6 @@
 
     <Button
         android:id="@+id/button1"
-        style="@style/CircularButtonStyle"
         android:layout_width="65dp"
         android:layout_height="65dp"
         android:background="@drawable/myrect"
@@ -81,7 +96,6 @@
 
     <Button
         android:id="@+id/button2"
-        style="@style/CircularButtonStyle"
         android:layout_width="65dp"
         android:layout_height="65dp"
         android:background="@drawable/myrect"
@@ -104,12 +118,9 @@
 
     <Button
         android:id="@+id/button6"
-        style="@style/CircularButtonStyle"
         android:layout_width="65dp"
         android:layout_height="65dp"
         android:background="@drawable/myrect"
-        android:backgroundTint="@color/blue"
-        android:elevation="2dp"
         android:isScrollContainer="false"
         android:rotation="315"
         app:icon="@drawable/double_arrow_48"
@@ -117,7 +128,6 @@
         app:iconPadding="0dp"
         app:iconSize="48dp"
         app:iconTint="@color/black"
-
         app:layout_constraintBottom_toTopOf="@+id/button2"
         app:layout_constraintEnd_toStartOf="@+id/button1"
         app:layout_constraintHorizontal_bias="1.0"
@@ -127,7 +137,6 @@
 
     <Button
         android:id="@+id/button7"
-        style="@style/CircularButtonStyle"
         android:layout_width="65dp"
         android:layout_height="65dp"
         android:background="@drawable/myrect"
@@ -150,7 +159,6 @@
 
     <Button
         android:id="@+id/button3"
-        style="@style/CircularButtonStyle"
         android:layout_width="65dp"
         android:layout_height="65dp"
         android:background="@drawable/myrect"
@@ -173,7 +181,6 @@
 
     <Button
         android:id="@+id/button9"
-        style="@style/CircularButtonStyle"
         android:layout_width="65dp"
         android:layout_height="65dp"
         android:background="@drawable/myrect"
@@ -196,11 +203,10 @@
 
     <Button
         android:id="@+id/button8"
-        style="@style/CircularButtonStyle"
         android:layout_width="65dp"
         android:layout_height="65dp"
         android:background="@drawable/myrect"
-        android:backgroundTint="@color/blue"
+        android:backgroundTint="@color/red"
         android:elevation="2dp"
         android:isScrollContainer="false"
         android:rotation="225"

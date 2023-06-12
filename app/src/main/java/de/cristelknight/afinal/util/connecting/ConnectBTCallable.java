@@ -19,9 +19,9 @@ public class ConnectBTCallable implements Callable<Void> {
     public static final int MAX_ATTEMPTS = 5;  // Maximum number of connection attempts
     public static final long RETRY_INTERVAL = 2000;  // Interval between connection attempts in milliseconds
 
-    private Control control;
-    private Future<Void> connectTask;
-    private ProgressDialog dialog;
+    private final Control control;
+    private final Future<Void> connectTask;
+    private final ProgressDialog dialog;
 
     public ConnectBTCallable(Control control, Future<Void> connectTask, ProgressDialog dialog) {
         this.control = control;
@@ -34,7 +34,7 @@ public class ConnectBTCallable implements Callable<Void> {
     public Void call() {
         for (int attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
             if (Thread.currentThread().isInterrupted()){
-                msg("Interrupted");
+                log("Interrupted");
                 cancel();
                 return null;
             }
@@ -69,7 +69,7 @@ public class ConnectBTCallable implements Callable<Void> {
     }
 
     public void cancel() {
-        msg("canceled");
+        log("canceled");
         dismiss(false);
         control.finish();
     }
@@ -82,11 +82,12 @@ public class ConnectBTCallable implements Callable<Void> {
             dialog.cancel();
         }
         Control.isTryingToConnect = false;
-        if(bl)msg("Connected!");
-        else msg("Couldn't connect 1");
+        control.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+        if(bl) log("Connected!");
+        else log("Couldn't connect 1");
     }
 
-    private void msg(String s) {
+    public static void log(String s) {
         Log.d(TAG, s);
     }
 

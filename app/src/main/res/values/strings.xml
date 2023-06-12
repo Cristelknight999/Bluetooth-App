@@ -14,4 +14,5 @@
     <string name="disconnect_pairing">Disconnect Pairing</string>
     <string name="speed">Speed</string>
     <string name="rotation">Rotation</string>
+    <string name="water">Water</string>
 </resources>

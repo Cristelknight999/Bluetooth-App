@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#C81515"
-    android:backgroundTint="@color/white"
+    android:backgroundTint="@color/dc_gray"
     tools:context=".Control">
 
     <TextView
@@ -36,7 +36,6 @@
 
     <Button
         android:id="@+id/button3"
-        style="@style/CircularButtonStyle"
         android:layout_width="65dp"
         android:layout_height="65dp"
         android:background="@drawable/myrect"
@@ -59,7 +58,6 @@
 
     <Button
         android:id="@+id/button7"
-        style="@style/CircularButtonStyle"
         android:layout_width="65dp"
         android:layout_height="65dp"
         android:background="@drawable/myrect"
@@ -82,7 +80,6 @@
 
     <Button
         android:id="@+id/button6"
-        style="@style/CircularButtonStyle"
         android:layout_width="65dp"
         android:layout_height="65dp"
         android:background="@drawable/myrect"
@@ -105,7 +102,6 @@
 
     <Button
         android:id="@+id/button2"
-        style="@style/CircularButtonStyle"
         android:layout_width="65dp"
         android:layout_height="65dp"
         android:background="@drawable/myrect"
@@ -128,7 +124,6 @@
 
     <Button
         android:id="@+id/button1"
-        style="@style/CircularButtonStyle"
         android:layout_width="65dp"
         android:layout_height="65dp"
         android:background="@drawable/myrect"
@@ -150,7 +145,6 @@
 
     <Button
         android:id="@+id/button8"
-        style="@style/CircularButtonStyle"
         android:layout_width="65dp"
         android:layout_height="65dp"
         android:background="@drawable/myrect"
@@ -173,7 +167,6 @@
 
     <Button
         android:id="@+id/button4"
-        style="@style/CircularButtonStyle"
         android:layout_width="65dp"
         android:layout_height="65dp"
         android:background="@drawable/myrect"
@@ -196,7 +189,6 @@
 
     <Button
         android:id="@+id/button9"
-        style="@style/CircularButtonStyle"
         android:layout_width="65dp"
         android:layout_height="65dp"
         android:background="@drawable/myrect"
@@ -262,5 +254,22 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.090" />
+
+    <Switch
+        android:id="@+id/switch1"
+        android:layout_width="92dp"
+        android:layout_height="28dp"
+        android:layout_marginEnd="128dp"
+        android:text="@string/water"
+        android:textColor="@color/red"
+        android:textColorHint="@color/red"
+        app:layout_constraintBottom_toTopOf="@+id/button1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/seekBar2"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.56"
+        tools:ignore="UseSwitchCompatOrMaterialXml" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

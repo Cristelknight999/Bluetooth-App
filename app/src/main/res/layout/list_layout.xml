@@ -9,8 +9,8 @@
         android:id="@+id/device_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/blue"
-        android:textColorHighlight="@color/blue"
+        android:textColor="@color/red"
+        android:textColorHighlight="@color/red"
         android:textSize="18sp"
         android:textStyle="bold" />
 
@@ -18,8 +18,8 @@
         android:id="@+id/device_address"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/white"
-        android:textColorHighlight="@color/white"
+        android:textColor="@color/blue"
+        android:textColorHighlight="@color/blue"
         android:textSize="14sp" />
 
 </LinearLayout>
