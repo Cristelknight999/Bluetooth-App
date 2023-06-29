@@ -29,8 +29,11 @@ import de.cristelknight.afinal.util.GeneralUtil;
 
 public class DeviceList extends AppCompatActivity {
 
+    // Declare UI elements
     Chip btnPaired;
     ListView devicelist;
+
+    // Declare variables
     private BluetoothAdapter myBluetooth = null;
     public static String EXTRA_ADDRESS = "device_address";
 
@@ -38,25 +41,31 @@ public class DeviceList extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Check if the Android version is supported
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             msg("Android version to new!");
             finish();
         }
 
+        // Set up the view and initialize UI elements
         setContentView(R.layout.activity_main);
         btnPaired = findViewById(R.id.chip4);
         devicelist = findViewById(R.id.recyclerView);
         addListView();
 
+        // Check if Bluetooth is available on the device
         myBluetooth = BluetoothAdapter.getDefaultAdapter();
         if (myBluetooth == null) {
             msg("Bluetooth device not available");
             finish();
         } else if (!myBluetooth.isEnabled()) {
+            // Request user to enable Bluetooth if it's not enabled
             Intent turnBTon = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(turnBTon, 1);
         }
 
+        // Clear and add paired devices to the device list
         clearAndAddDevices();
         btnPaired.setOnClickListener(v -> clearAndAddDevices());
     }

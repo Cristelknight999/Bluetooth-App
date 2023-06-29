@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.widget.Button;
@@ -21,33 +20,37 @@ import de.cristelknight.afinal.util.connecting.ConnectBT;
 
 public class Control extends AppCompatActivity {
 
+    // Declare UI elements
     Button btnDis, btn1, btn2, btn3, btn4, btn6, btn7, btn8, btn9;
     SeekBar seekBar, seekBar2;
     @SuppressLint("UseSwitchCompatOrMaterialCode")
     Switch switch1;
+
+    // Declare variables
     private int seekBarDelay = 0;
     private int seekBarDelay2 = 0;
-
     public String address = null;
     public BluetoothAdapter myBluetooth = null;
     public static BluetoothSocket btSocket = null;
     public static boolean isBtConnected = false;
     public static boolean isTryingToConnect = false;
-
     public static final UUID serialUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Get the Bluetooth device address from the previous activity
         Intent newInt = getIntent();
         address = newInt.getStringExtra(DeviceList.EXTRA_ADDRESS);
 
+        // Connect to the Bluetooth device if not already connected or attempting to connect
         if(!isBtConnected && !isTryingToConnect){
             new ConnectBT(this).execute();
         }
 
-        //Set-up View
+        // Set up the view and initialize UI elements
         setContentView(R.layout.activity_second);
         btn1 = findViewById(R.id.button1);
         btn2 = findViewById(R.id.button2);
@@ -64,7 +67,9 @@ public class Control extends AppCompatActivity {
         seekBar2.setProgress(50);
         switch1 = findViewById(R.id.switch1);
 
+        // Set listeners for the switch and seek bars
         switch1.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            // Handle switch state change
             if (isChecked) {
                 sendSignalClosed("w" + 1);
             } else {
@@ -73,7 +78,7 @@ public class Control extends AppCompatActivity {
         });
 
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-
+            // Handle seek bar progress change
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 seekBarDelay = getProgressSpeed(progress, seekBarDelay, true);
@@ -89,7 +94,7 @@ public class Control extends AppCompatActivity {
         });
 
         seekBar2.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-
+            // Handle seek bar progress change
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if(fromUser)
@@ -109,6 +114,7 @@ public class Control extends AppCompatActivity {
             }
         });
 
+        // Set touch listeners for buttons
         setOnTouchListener(btn1, 1);
         setOnTouchListener(btn2, 2);
         setOnTouchListener(btn3, 3);
@@ -118,7 +124,7 @@ public class Control extends AppCompatActivity {
         setOnTouchListener(btn8, 8);
         setOnTouchListener(btn9, 9);
 
-
+        // Set click listener for the disconnect button
         btnDis.setOnClickListener(v -> disconnect());
     }
 
@@ -131,6 +137,7 @@ public class Control extends AppCompatActivity {
 
 
     public int getProgressRotation(int progress, int currentDelay, boolean delayed){
+        progress = 100 - progress; // Reverse the progress, so that we don't have to change the arduino code (Step Motor rotates
         return GeneralUtil.getProgress(progress, currentDelay, 15, -100, 100, delayed,"r", this);
     }
 
@@ -159,7 +166,7 @@ public class Control extends AppCompatActivity {
 
 
     public void sendSignalClosed(String string) {
-        sendSignal(string + "z");
+        sendSignal(string + "z"); // end every message to the arduino with z, so it knows where a message ends
     }
 
     private void sendSignal(String string) {

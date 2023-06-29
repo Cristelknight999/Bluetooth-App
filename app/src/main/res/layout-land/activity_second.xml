@@ -258,7 +258,7 @@
     <Switch
         android:id="@+id/switch1"
         android:layout_width="92dp"
-        android:layout_height="28dp"
+        android:layout_height="48dp"
         android:layout_marginEnd="128dp"
         android:text="@string/water"
         android:textColor="@color/red"

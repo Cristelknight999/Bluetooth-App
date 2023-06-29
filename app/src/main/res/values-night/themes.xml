@@ -1,7 +1,12 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.Final" parent="Theme.Material3.DayNight.NoActionBar">
-        <item name="colorPrimary">@color/blue</item>
-        <item name="colorPrimaryInverse">@color/less_blue</item>
+        <item name="colorPrimary">@color/red</item>
+        <item name="colorSecondary">@color/red</item> <!-- For Slider "Buttons" -->
+        <item name="colorPrimaryInverse">@color/blue</item>
+        <item name="colorControlNormal">@color/red</item>
+        <item name="android:textColor">@color/red</item>
     </style>
+
+    <style name="Theme.Final" parent="Base.Theme.Final" />
 </resources>

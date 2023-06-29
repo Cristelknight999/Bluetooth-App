@@ -18,7 +18,6 @@ import de.cristelknight.afinal.Control;
 public class ConnectBTCallable implements Callable<Void> {
     public static final int MAX_ATTEMPTS = 5;  // Maximum number of connection attempts
     public static final long RETRY_INTERVAL = 2000;  // Interval between connection attempts in milliseconds
-
     private final Control control;
     private final Future<Void> connectTask;
     private final ProgressDialog dialog;
@@ -39,9 +38,9 @@ public class ConnectBTCallable implements Callable<Void> {
                 return null;
             }
 
-
             try {
-                if (Control.btSocket == null || !Control.isBtConnected) {
+                if (Control.btSocket == null || !Control.isBtConnected) { // Check if bluetooth is not connected yet
+                    //Handle connection
                     control.myBluetooth = BluetoothAdapter.getDefaultAdapter();
                     BluetoothDevice dispositivo = control.myBluetooth.getRemoteDevice(control.address);
                     Control.btSocket = dispositivo.createInsecureRfcommSocketToServiceRecord(Control.serialUUID);
@@ -49,7 +48,7 @@ public class ConnectBTCallable implements Callable<Void> {
                     Control.btSocket.connect();
 
                     Control.isBtConnected = true;
-                    dismiss(true);
+                    dismiss(true); // Dismiss the progress dialog and indicate successful connection
                     return null;
                 }
 
@@ -64,25 +63,25 @@ public class ConnectBTCallable implements Callable<Void> {
 
         // All connection attempts failed
 
-        cancel();
+        cancel(); // Cancel the connection attempt
         return null;
     }
 
     public void cancel() {
         log("canceled");
         dismiss(false);
-        control.finish();
+        control.finish(); // Finish the control activity and return to the DeviceList
     }
 
-    public void dismiss(boolean bl) {
+    public void dismiss(boolean bl) { //true = successful, false = unsuccessful
         if (connectTask != null) {
-            connectTask.cancel(true);
+            connectTask.cancel(true); // Cancel the connectTask
         }
         if (dialog != null) {
-            dialog.cancel();
+            dialog.cancel(); // stop showing the progress dialog
         }
         Control.isTryingToConnect = false;
-        control.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+        control.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED); // Restore the screen orientation
         if(bl) log("Connected!");
         else log("Couldn't connect 1");
     }
