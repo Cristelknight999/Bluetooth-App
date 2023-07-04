@@ -116,13 +116,13 @@ public class Control extends AppCompatActivity {
 
         // Set touch listeners for buttons
         setOnTouchListener(btn1, 1);
-        setOnTouchListener(btn2, 2);
-        setOnTouchListener(btn3, 3);
+        setOnTouchListener(btn2, 3);
+        setOnTouchListener(btn3, 2);
         setOnTouchListener(btn4, 4);
-        setOnTouchListener(btn6, 6);
-        setOnTouchListener(btn7, 7);
-        setOnTouchListener(btn8, 8);
-        setOnTouchListener(btn9, 9);
+        setOnTouchListener(btn6, 7);
+        setOnTouchListener(btn7, 6);
+        setOnTouchListener(btn8, 9);
+        setOnTouchListener(btn9, 8);
 
         // Set click listener for the disconnect button
         btnDis.setOnClickListener(v -> disconnect());
